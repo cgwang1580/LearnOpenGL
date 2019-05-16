@@ -44,7 +44,7 @@ int main() {
 		cout << "verShader is NULL" << endl;
 		return MERR_NO_MEMORY;
 	}
-	strcpy(verShader, vertexShaderSourceTest.c_str());
+	strcpy(verShader, vertexShaderSourceColor.c_str());
 	printf("vertex shader\n %s\n", verShader);
 	glShaderSource(vertexShader, 1, &verShader, NULL);
 	glCompileShader(vertexShader);
@@ -58,7 +58,7 @@ int main() {
 		cout << "fragShader is NULL" << endl;
 		return MERR_NO_MEMORY;
 	}
-	strcpy(fragShader, fragmentShaderSourceTestUniform.c_str());
+	strcpy(fragShader, fragmentShaderSourceColor.c_str());
 	printf("fragment shader\n %s\n", fragShader);
 	glShaderSource(fragmentShader, 1, &fragShader, NULL);
 	glCompileShader(fragmentShader);
@@ -81,16 +81,20 @@ int main() {
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices3), vertices3, GL_STATIC_DRAW);
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);
 
 	// set vertex property
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	// set vertex color property
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof (float)));
 
+	glEnableVertexAttribArray(1);
+ 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
@@ -106,14 +110,14 @@ int main() {
 		glUseProgram(shaderProgram);
 
 		// set uniform valiable
-		float timeValue = glfwGetTime();
+		/*float timeValue = glfwGetTime();
 		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
 		if (-1 == vertexColorLocation) {
 			cout << "glGetUniformLocation failed" << endl;
 			break;
 		}
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);*/
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
