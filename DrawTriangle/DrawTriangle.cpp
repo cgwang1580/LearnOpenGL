@@ -1,10 +1,16 @@
 #include "DrawTriangle.h"
-using namespace std;
 
 int main() {
+
+	/*int result = MOK;
+	char infoLog[MY_MAX_PATH];*/
+
 	if (!glfwInit()) {
 		return -1;
 	}
+	
+	//cout << "vertex shader: " << endl << vertexShaderSource << endl;
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -23,18 +29,92 @@ int main() {
 		cout << "Failed to intialize GLAD" << endl;
 		return -1;
 	}
+
+	// create and compile shader
+	unsigned int vertexShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	char *verShader = NULL;
+	verShader = new char[MY_MAX_PATH];
+	if (!verShader) {
+		cout << "verShader is NULL" << endl;
+		return MERR_NO_MEMORY;
+	}
+	strcpy(verShader, vertexShaderSource.c_str());
+	printf("vertex shader\n %s\n", verShader);
+	glShaderSource(vertexShader, 1, &verShader, NULL);
+	glCompileShader(vertexShader);
+
+	// create fragment shader
+	unsigned int fragmentShader;
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	char *fragShader = NULL;
+	fragShader = new char[MY_MAX_PATH];
+	if (!fragShader) {
+		cout << "fragShader is NULL" << endl;
+		return MERR_NO_MEMORY;
+	}
+	strcpy(fragShader, fragmentShaderSource.c_str());
+	printf("fragment shader\n %s\n", fragShader);
+	glShaderSource(fragmentShader, 1, &fragShader, NULL);
+	glCompileShader(fragmentShader);
+
+	// create shader program
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+	// link vertex shader and fragment shader
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+
+	// generate VBO
+	glGenBuffers(1, &VBO);
+	// generate VAO
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);
+
+	// set vertex property
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
 
 		// process
 		processInput(window);
 
+		glUseProgram(shaderProgram);
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
+	glBindVertexArray(0);
+	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAO);
+
 	glfwTerminate();
-	//system("pause");
+	if (verShader) {
+		delete []verShader;
+	}
+	if (fragmentShader) {
+		delete[]fragShader;
+	}
 	return MOK;
 }
 
