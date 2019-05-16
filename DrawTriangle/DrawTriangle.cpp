@@ -30,6 +30,11 @@ int main() {
 		return -1;
 	}
 
+	int nrAttributes = 0;
+	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+	cout << "GL_MAX_VERTEX_ATTRIBS " << nrAttributes << endl;
+
+
 	// create and compile shader
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -39,7 +44,7 @@ int main() {
 		cout << "verShader is NULL" << endl;
 		return MERR_NO_MEMORY;
 	}
-	strcpy(verShader, vertexShaderSource.c_str());
+	strcpy(verShader, vertexShaderSourceTest.c_str());
 	printf("vertex shader\n %s\n", verShader);
 	glShaderSource(vertexShader, 1, &verShader, NULL);
 	glCompileShader(vertexShader);
@@ -53,7 +58,7 @@ int main() {
 		cout << "fragShader is NULL" << endl;
 		return MERR_NO_MEMORY;
 	}
-	strcpy(fragShader, fragmentShaderSource.c_str());
+	strcpy(fragShader, fragmentShaderSourceTestUniform.c_str());
 	printf("fragment shader\n %s\n", fragShader);
 	glShaderSource(fragmentShader, 1, &fragShader, NULL);
 	glCompileShader(fragmentShader);
@@ -89,7 +94,9 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// set mode as draw line
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	// render loop
 	while (!glfwWindowShouldClose(window)) {
 
@@ -97,6 +104,17 @@ int main() {
 		processInput(window);
 
 		glUseProgram(shaderProgram);
+
+		// set uniform valiable
+		float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourColor");
+		if (-1 == vertexColorLocation) {
+			cout << "glGetUniformLocation failed" << endl;
+			break;
+		}
+		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

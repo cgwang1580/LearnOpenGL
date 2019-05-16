@@ -61,6 +61,35 @@ void main()\n\
 	FragColor  = vec4 (1.0f, 0.5f, 0.2f, 1.0f);\n\
 }";
 
+const string vertexShaderSourceTest = "\
+#version 330 core\n\
+layout (location = 0) in vec3 aPos;\n\
+out vec4 vertexColor;\n\
+void main()\n\
+{\n\
+	gl_Position = vec4 (aPos.x, aPos.y, aPos.z, 1.0);\n\
+	vertexColor = vec4 (0.5, 0.0, 0.0, 1.0);\n\
+}";
+
+const string fragmentShaderSourceTest = "\
+#version 330 core\n\
+out vec4 FragColor;\n\
+in vec4 vertexColor;\n\
+void main()\n\
+{\n\
+	FragColor  = vertexColor;\n\
+}";
+
+const string fragmentShaderSourceTestUniform = "\
+#version 330 core\n\
+out vec4 FragColor;\n\
+uniform vec4 ourColor;\n\
+void main()\n\
+{\n\
+	FragColor  = ourColor;\n\
+}";
+
+
 unsigned int VBO;
 unsigned int VAO;
 unsigned int EBO;
