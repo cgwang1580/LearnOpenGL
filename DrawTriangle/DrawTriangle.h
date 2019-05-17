@@ -1,3 +1,7 @@
+/***
+** This project can draw a triangle, and here is a rectangle now
+***/
+
 #ifndef DRAW_TRIANGLE_HEADER
 #define DRAW_TRIANGLE_HEADER
 
@@ -119,6 +123,7 @@ void main()\n\
 }";
 
 const string VertexShaderPath = "Shader\\vertex.shader";
+const string VertexShader2Path = "Shader\\vertexRight.shader";
 const string FragmentShaderPath = "Shader\\fragment.shader";
 
 unsigned int VBO;

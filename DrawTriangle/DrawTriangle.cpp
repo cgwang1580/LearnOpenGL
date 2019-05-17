@@ -36,7 +36,7 @@ int main() {
 
 #ifdef USE_SHADER_HELPER
 	// use Shader_Helper
-	Shader_Helper shaderHelper(VertexShaderPath, FragmentShaderPath);
+	Shader_Helper shaderHelper(VertexShader2Path, FragmentShaderPath);
 #else
 	// create and compile shader
 	unsigned int vertexShader;
@@ -113,6 +113,7 @@ int main() {
 
 #ifdef USE_SHADER_HELPER
 		shaderHelper.use();
+		shaderHelper.setfloat("offset", 0.2);
 #else
 		glUseProgram(shaderProgram);
 #endif // USE_SHADER_HELPER
