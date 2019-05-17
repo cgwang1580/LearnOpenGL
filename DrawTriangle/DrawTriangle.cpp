@@ -34,7 +34,10 @@ int main() {
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 	cout << "GL_MAX_VERTEX_ATTRIBS " << nrAttributes << endl;
 
-
+#ifdef USE_SHADER_HELPER
+	// use Shader_Helper
+	Shader_Helper shaderHelper(VertexShaderPath, FragmentShaderPath);
+#else
 	// create and compile shader
 	unsigned int vertexShader;
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -73,6 +76,7 @@ int main() {
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+#endif // USE_SHADER_HELPER
 
 	// generate VBO
 	glGenBuffers(1, &VBO);
@@ -107,8 +111,11 @@ int main() {
 		// process
 		processInput(window);
 
+#ifdef USE_SHADER_HELPER
+		shaderHelper.use();
+#else
 		glUseProgram(shaderProgram);
-
+#endif // USE_SHADER_HELPER
 		// set uniform valiable
 		/*float timeValue = glfwGetTime();
 		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
@@ -131,12 +138,17 @@ int main() {
 	glDeleteVertexArrays(1, &VAO);
 
 	glfwTerminate();
+
+#ifdef USE_SHADER_HELPER
+#else
 	if (verShader) {
-		delete []verShader;
+		delete[]verShader;
 	}
 	if (fragmentShader) {
 		delete[]fragShader;
 	}
+#endif // USE_SHADER_HELPER
+
 	return MOK;
 }
 

@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\Libs\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Libs\include;..\commonFiles;$(IncludePath)</IncludePath>
     <LibraryPath>..\Libs\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -149,10 +149,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\CommonFiles\Shader_Helper.cpp" />
     <ClCompile Include="DrawTriangle.cpp" />
     <ClCompile Include="glad.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\CommonFiles\Shader_Helper.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="DrawTriangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

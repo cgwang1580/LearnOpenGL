@@ -4,7 +4,7 @@
 #include <glad\glad.h>
 #include <GLFW\glfw3.h>
 #include <iostream>
-//#pragma once
+#include "Shader_Helper.h"
 
 enum MERR_CODE{
 	MOK = 0,

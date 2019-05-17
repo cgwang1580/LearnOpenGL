@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\Libs\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Libs\include;..\CommonFiles;$(IncludePath)</IncludePath>
     <LibraryPath>..\Libs\libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,11 +151,9 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="HelloOpenGL.cpp" />
-    <ClCompile Include="MyShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HelloOpenGL.h" />
-    <ClInclude Include="MyShader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

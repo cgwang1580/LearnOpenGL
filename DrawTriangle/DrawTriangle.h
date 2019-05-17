@@ -5,7 +5,8 @@
 #include <GLFW\glfw3.h>
 #include <iostream>
 #include <string>
-//#pragma once
+#include <Shader_Helper.h>
+#include "Config.h"
 
 using namespace std;
 
@@ -116,6 +117,9 @@ void main()\n\
 {\n\
 	FragColor  = vec4 (vertexColor, 1.0);\n\
 }";
+
+const string VertexShaderPath = "Shader\\vertex.shader";
+const string FragmentShaderPath = "Shader\\fragment.shader";
 
 unsigned int VBO;
 unsigned int VAO;
