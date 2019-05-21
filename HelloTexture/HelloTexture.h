@@ -23,6 +23,7 @@ enum MERR_CODE {
 
 const string imagePath = "..\\Resource\\HelloTexture\\container.jpg";
 const string imagePath2 = "..\\Resource\\HelloTexture\\awesomeface.png";
+const string imagePath3 = "..\\Resource\\HelloTexture\\face.jpg";
 
 unsigned int texture;
 unsigned int texture2;

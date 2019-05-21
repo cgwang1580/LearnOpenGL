@@ -51,7 +51,8 @@ int main() {
 	int imgHeight = 0;
 	int nChannels = 0;
 	unsigned char* data = NULL;
-	data = stbi_load(imagePath.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
+	stbi_set_flip_vertically_on_load(true);
+	data = stbi_load(imagePath3.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -73,6 +74,7 @@ int main() {
 	int nChannels2 = 0;
 	unsigned char* data2 = NULL;
 	data2 = stbi_load(imagePath2.c_str(), &imgWidth2, &imgHeight2, &nChannels2, 0);
+	stbi_set_flip_vertically_on_load(true);
 	if (data2) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth2, imgHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
 		glGenerateMipmap(GL_TEXTURE_2D);
