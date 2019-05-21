@@ -52,7 +52,7 @@ int main() {
 	int nChannels = 0;
 	unsigned char* data = NULL;
 	stbi_set_flip_vertically_on_load(true);
-	data = stbi_load(imagePath3.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
+	data = stbi_load(imagePath.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
 	if (data) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -73,8 +73,8 @@ int main() {
 	int imgHeight2 = 0;
 	int nChannels2 = 0;
 	unsigned char* data2 = NULL;
-	data2 = stbi_load(imagePath2.c_str(), &imgWidth2, &imgHeight2, &nChannels2, 0);
 	stbi_set_flip_vertically_on_load(true);
+	data2 = stbi_load(imagePath3.c_str(), &imgWidth2, &imgHeight2, &nChannels2, 0);
 	if (data2) {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth2, imgHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
 		glGenerateMipmap(GL_TEXTURE_2D);
@@ -86,8 +86,8 @@ int main() {
 	stbi_image_free(data2);
 
 #ifdef USE_SHADER_HELPER
-	/*shaderHelper.use();
-	shaderHelper.setInt("texture2", 1);*/
+	shaderHelper.use();
+	shaderHelper.setInt("texture2", 1);
 #endif
 
 	while (!glfwWindowShouldClose(window)) {
@@ -99,8 +99,8 @@ int main() {
 		// bind Texture
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		/*glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);*/
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, texture2);
 
 #ifdef USE_SHADER_HELPER
 		shaderHelper.use();
