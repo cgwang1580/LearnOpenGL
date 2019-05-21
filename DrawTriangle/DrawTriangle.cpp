@@ -8,14 +8,12 @@ int main() {
 	if (!glfwInit()) {
 		return -1;
 	}
-	
-	//cout << "vertex shader: " << endl << vertexShaderSource << endl;
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow *window = glfwCreateWindow(WIN_WINDTH, WIN_HEIGHT, "HelloOpenGL", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(WIN_WINDTH, WIN_HEIGHT, "DrawTriangle", NULL, NULL);
 	if (NULL == window) {
 		cout << "glfwCreateWindow failed" << endl;
 		glfwTerminate();
@@ -96,7 +94,6 @@ int main() {
 	glEnableVertexAttribArray(0);
 	// set vertex color property
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof (float)));
-
 	glEnableVertexAttribArray(1);
  
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
