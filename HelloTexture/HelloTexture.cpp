@@ -88,6 +88,7 @@ int main() {
 #ifdef USE_SHADER_HELPER
 	shaderHelper.use();
 	shaderHelper.setInt("texture2", 1);
+	//shaderHelper.setfloat("thresh", 0.5);
 #endif
 
 	while (!glfwWindowShouldClose(window)) {
@@ -104,6 +105,20 @@ int main() {
 
 #ifdef USE_SHADER_HELPER
 		shaderHelper.use();
+		// get input 
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			thresh -= 0.05;
+			if (thresh <= 0.0) {
+				thresh = 0.0;
+			}
+		}
+		else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+			thresh += 0.05;
+			if (thresh >= 1.0) {
+				thresh = 1.0;
+			}
+		}
+		shaderHelper.setfloat("thresh", thresh);
 #endif // USE_SHADER_HELPER
 
 		glBindVertexArray(VAO);

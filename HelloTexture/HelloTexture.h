@@ -30,6 +30,9 @@ unsigned int texture2;
 unsigned int VAO;
 unsigned int VBO;
 unsigned int EBO;
+
+float thresh = 0.5;
+
 float vertices[] = {
 	// vertex				color				texture
 	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
