@@ -129,7 +129,16 @@ int main() {
 		glUniformMatrix4fv(perspectiveLoc, 1, GL_FALSE, glm::value_ptr(perspective));
 
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		for (int i = 0; i < 10; ++i) {
+			glm::mat4 model = glm::mat4(1.0);
+			model = glm::translate(model, cubePositions[i]);
+			GLfloat angel = 20.0f * i;
+			model = glm::rotate(model, angel, glm::vec3(1.0f, 0.3f, 0.5f));
+			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
 		//glBindVertexArray(0);
 
 		/*glm::mat4 scaleTransform = glm::mat4(1.0f);
