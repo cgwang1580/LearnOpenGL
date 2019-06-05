@@ -134,6 +134,9 @@ int main() {
 			glm::mat4 model = glm::mat4(1.0);
 			model = glm::translate(model, cubePositions[i]);
 			GLfloat angel = 20.0f * i;
+			if (i%4 == 0) {
+				angel = (GLfloat)glfwGetTime();
+			}
 			model = glm::rotate(model, angel, glm::vec3(1.0f, 0.3f, 0.5f));
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
