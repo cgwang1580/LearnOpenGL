@@ -106,6 +106,11 @@ glm::vec3 cubePositions[] = {
 	glm::vec3(-1.3f,  1.0f, -1.5f)
 };
 
+// define camera system
+glm::vec3 cameraPos = glm::vec3(0.0, 0.0, 3.0);
+glm::vec3 cameraFront = glm::vec3(0.0, 0.0, -1.0);
+glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
+
 const string vertexShaderPath = "Shader/vertex.shader";
 const string fragmentShaderPath = "Shader/fragment.shader";
 GLFWwindow *window = NULL;

@@ -112,13 +112,8 @@ int main() {
 		glm::mat4 transform = glm::mat4(1.0f);
 		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
-		/*glm::mat4 view = glm::mat4(1.0f);
-		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));*/
-		GLfloat radius = 10.0f;
-		GLfloat camX = sin(glfwGetTime()) * radius;
-		GLfloat camY = cos(glfwGetTime()) * radius;
 		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::lookAt(glm::vec3(camX, 0.0f, camY), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 		glm::mat4 perspective = glm::mat4(1.0f);
 		perspective = glm::perspective(45.0f, (float)WIN_WINDTH / WIN_HEIGHT, 0.1f, 100.0f);
@@ -146,15 +141,6 @@ int main() {
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-
-		//glBindVertexArray(0);
-
-		/*glm::mat4 scaleTransform = glm::mat4(1.0f);
-		float sinAngle = glm::abs(glm::sin((GLfloat)glfwGetTime()));
-		scaleTransform = glm::translate(scaleTransform, glm::vec3(-0.5f, 0.5f, 0));
-		scaleTransform = glm::scale(scaleTransform, glm::vec3(sinAngle, sinAngle, 1.0f));
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(scaleTransform));
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
 		glBindVertexArray(0);
 
 
@@ -209,9 +195,23 @@ void processInput(GLFWwindow *window) {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	GLfloat cameraSpeed = 0.05f;
 	// get input 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		cameraPos += cameraSpeed * cameraFront;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		cameraPos -= cameraSpeed * cameraFront;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;;
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;;
+	}
+
 }
 
