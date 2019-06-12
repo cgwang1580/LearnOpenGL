@@ -99,6 +99,13 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
+		currentTime = static_cast<float>(glfwGetTime());
+		takeTime = currentTime - lastTime;
+		//cameraSpeed = takeTime * 1000000000.0f * cameraSpeed;
+		cout << "lastTime = " << lastTime << "  currentTime = " << currentTime << "  takeTime = " << takeTime << "  cameraSpeed = " << cameraSpeed << endl;
+
+		doMovement();
+
 		// active texture
 		glActiveTexture(GL_TEXTURE0);
 		// bind Texture
@@ -148,6 +155,8 @@ int main() {
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		lastTime = static_cast<float> (glfwGetTime());
 	}
 
 	glDeleteBuffers(1, &VBO);
@@ -195,23 +204,52 @@ void processInput(GLFWwindow *window) {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GLfloat cameraSpeed = 0.05f;
+	// get input 
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+		keys[GLFW_KEY_UP] = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+		keys[GLFW_KEY_DOWN] = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+		keys[GLFW_KEY_LEFT] = true;
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+		keys[GLFW_KEY_RIGHT] = true;
+	}
+
+	//GLfloat cameraSpeed = 0.05f;
 	// get input 
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+	/*if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 		cameraPos += cameraSpeed * cameraFront;
 	}
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 		cameraPos -= cameraSpeed * cameraFront;
 	}
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;;
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 	}
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;;
-	}
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	}*/
 
+}
+
+void doMovement(){
+
+	if (keys[GLFW_KEY_UP])
+		cameraPos += cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_DOWN])
+		cameraPos -= cameraSpeed * cameraFront;
+	if (keys[GLFW_KEY_RIGHT])
+		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (keys[GLFW_KEY_LEFT])
+		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	for (int i = 0; i < 1024; ++i) {
+		keys[i] = false;
+	}
 }
 

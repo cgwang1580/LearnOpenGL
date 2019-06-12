@@ -115,6 +115,12 @@ const string vertexShaderPath = "Shader/vertex.shader";
 const string fragmentShaderPath = "Shader/fragment.shader";
 GLFWwindow *window = NULL;
 
+bool keys[1024] = { false };
+GLfloat currentTime = 0.0f;
+GLfloat lastTime = 0.0f;
+GLfloat takeTime = 0.0f;
+GLfloat cameraSpeed = 0.1f;
+
 GLFWwindow* initGLFW();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -122,4 +128,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void processInput(GLFWwindow *window);
+
+void doMovement();
 
