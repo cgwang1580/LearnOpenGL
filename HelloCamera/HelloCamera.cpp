@@ -90,6 +90,11 @@ int main() {
 
 	glEnable(GL_DEPTH_TEST);
 
+	// get view port test
+	GLint dim[4];
+	glGetIntegerv(GL_VIEWPORT, dim);
+
+
 #ifdef USE_SHADER_HELPER
 	shaderHelper.use();
 	shaderHelper.setInt("texture1", 0);
@@ -99,9 +104,9 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
-		currentTime = static_cast<float>(glfwGetTime());
+		currentTime = static_cast<GLfloat>(glfwGetTime());
 		takeTime = currentTime - lastTime;
-		//cameraSpeed = takeTime * 1000000000.0f * cameraSpeed;
+		//cameraSpeed = takeTime * 10000000000.0f * cameraSpeed;
 		cout << "lastTime = " << lastTime << "  currentTime = " << currentTime << "  takeTime = " << takeTime << "  cameraSpeed = " << cameraSpeed << endl;
 
 		doMovement();
