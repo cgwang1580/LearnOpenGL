@@ -121,10 +121,63 @@ GLfloat lastTime = 0.0f;
 GLfloat takeTime = 0.0f;
 GLfloat cameraSpeed = 0.1f;
 
+GLfloat lastXPos = (GLfloat)WIN_WINDTH / 2;
+GLfloat lastYPos = (GLfloat)WIN_HEIGHT / 2;
+GLfloat sensity = 0.05;
+GLfloat yaw = -90.0;
+GLfloat pitch = 0.0;
+bool firstMouse = true;
+GLfloat aspect = 45.0f;
+
 GLFWwindow* initGLFW();
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	glViewport(0, 0, width, height);
+}
+
+// add mouse callback function 
+void mouse_callback(GLFWwindow *window, double xPos, double yPos) {
+	cout << "xPos = " << xPos << " yPos = " << yPos << endl;
+
+	if (firstMouse) {
+		lastXPos = xPos;
+		lastYPos = yPos;
+		firstMouse = false;
+	}
+
+	GLfloat offsetX = xPos - lastXPos;
+	GLfloat offsetY = lastYPos - yPos;
+
+	offsetX *= sensity;
+	offsetY *= sensity;
+
+	lastXPos = xPos;
+	lastYPos = yPos;
+
+	pitch += offsetY;
+	yaw += offsetX;
+
+	if (pitch > 89.0f) {
+		pitch = 89.0f;
+	}
+	if (pitch < -89.0f) {
+		pitch = -89.0f;
+	}
+	glm::vec3 front;
+	front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	front.y = sin(glm::radians(pitch));
+	front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	cameraFront = glm::normalize(front);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	if (aspect >= 1.0f && aspect <= 45.0f)
+		aspect -= yoffset;
+	if (aspect <= 1.0f)
+		aspect = 1.0f;
+	if (aspect >= 45.0f)
+		aspect = 45.0f;
 }
 
 void processInput(GLFWwindow *window);

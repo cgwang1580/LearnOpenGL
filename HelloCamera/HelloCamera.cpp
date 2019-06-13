@@ -107,7 +107,7 @@ int main() {
 		currentTime = static_cast<GLfloat>(glfwGetTime());
 		takeTime = currentTime - lastTime;
 		//cameraSpeed = takeTime * 10000000000.0f * cameraSpeed;
-		cout << "lastTime = " << lastTime << "  currentTime = " << currentTime << "  takeTime = " << takeTime << "  cameraSpeed = " << cameraSpeed << endl;
+		//cout << "lastTime = " << lastTime << "  currentTime = " << currentTime << "  takeTime = " << takeTime << "  cameraSpeed = " << cameraSpeed << endl;
 
 		doMovement();
 
@@ -128,7 +128,7 @@ int main() {
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
 		glm::mat4 perspective = glm::mat4(1.0f);
-		perspective = glm::perspective(45.0f, (float)WIN_WINDTH / WIN_HEIGHT, 0.1f, 100.0f);
+		perspective = glm::perspective(aspect, (float)WIN_WINDTH / WIN_HEIGHT, 0.1f, 100.0f);
 
 		// Get matrix's uniform location and set matrix
 		GLint transformLoc = glGetUniformLocation(shaderHelper.progreamId, "transform");
@@ -200,6 +200,11 @@ GLFWwindow* initGLFW() {
 	int nrAttributes = 0;
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 	cout << "GL_MAX_VERTEX_ATTRIBS " << nrAttributes << endl;
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPosCallback(window, mouse_callback);
+
+	glfwSetScrollCallback(window, scroll_callback);
 
 	return window;
 }
