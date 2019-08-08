@@ -21,15 +21,17 @@ enum MERR_CODE {
 	MERR_NO_MEMORY
 };
 
-const string imagePath = "..\\Resource\\HelloTexture\\container.jpg";
+const string imagePath = "..\\Resource\\HelloTexture\\test2.png";
 const string imagePath2 = "..\\Resource\\HelloTexture\\awesomeface.png";
-const string imagePath3 = "..\\Resource\\HelloTexture\\face.jpg";
+const string imagePath3 = "..\\Resource\\HelloTexture\\test1.jpg";
 
 unsigned int texture;
 unsigned int texture2;
 unsigned int VAO;
 unsigned int VBO;
 unsigned int EBO;
+
+unsigned int VAO_plane, VBO_plane, EBO_plane;
 
 float thresh = 0.5;
 

@@ -30,4 +30,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\fragment.shader" />
+    <None Include="Shader\vertex.shader" />
+    <None Include="Shader\vertexRight.shader" />
+  </ItemGroup>
 </Project>

@@ -154,6 +154,11 @@
     <ClCompile Include="..\CommonFiles\Shader_Helper.cpp" />
     <ClCompile Include="HelloTexture.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\fragment.shader" />
+    <None Include="Shader\vertex.shader" />
+    <None Include="Shader\vertexRight.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

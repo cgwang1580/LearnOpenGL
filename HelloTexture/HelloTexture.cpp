@@ -10,6 +10,12 @@ int main() {
 		return -1;
 	}
 
+	// configure global opengl state
+	// -----------------------------
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 #ifdef USE_SHADER_HELPER
 	Shader_Helper shaderHelper(vertexShaderPath, fragmentShaderPath);
 #endif // USE_SHADER_HELPER
@@ -38,6 +44,26 @@ int main() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
 
+
+	// VAO_Plane
+	glGenVertexArrays(1, &VAO_plane);
+	glGenBuffers(1, &VBO_plane);
+	glGenBuffers(1, &EBO_plane);
+	glBindVertexArray(VAO_plane);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_plane);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_plane);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
+	glBindVertexArray(0);
+
+
 	// load image, create texture
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -53,14 +79,40 @@ int main() {
 	unsigned char* data = NULL;
 	stbi_set_flip_vertically_on_load(true);
 	data = stbi_load(imagePath.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+
+	unsigned char* data_rgba = (unsigned char *)malloc(imgWidth * imgHeight * 4);
+	if (nullptr == data_rgba) {
+		std::cout << "data_rgba malloc failed" << std::endl;
+		return -1;
+	}
+	for (int row = 0; row < imgHeight; ++row) {
+		for (int col = 0; col < imgWidth; ++col) {
+			int r = *(data + row * imgWidth * 3 + col * 3);
+			int g = *(data + row * imgWidth * 3 + col * 3 + 1);
+			int b = *(data + row * imgWidth * 3 + col * 3 + 2);
+			*(data_rgba + row * imgWidth * 4 + col * 4) = r;
+			*(data_rgba + row * imgWidth * 4 + col * 4 + 1) = g;
+			*(data_rgba + row * imgWidth * 4 + col * 4 + 2) = b;
+			float gray = r * 0.299f + g * 0.587f + b * 0.114f;
+			if (gray < 100) {
+				*(data_rgba + row * imgWidth * 4 + col * 4 + 3) = 0;
+			}
+			else {
+				*(data_rgba + row * imgWidth * 4 + col * 4 + 3) = 120;
+			}
+		}
+	}
+
+	if (data_rgba) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, data_rgba);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}else{
 		cout << "stbi_load image failed" << endl;
 		return -1;
 	}
 	stbi_image_free(data);
+	free(data_rgba);
+	data_rgba = nullptr;
 
 	// load texture2
 	glGenTextures(1, &texture2);
@@ -75,20 +127,47 @@ int main() {
 	unsigned char* data2 = NULL;
 	stbi_set_flip_vertically_on_load(true);
 	data2 = stbi_load(imagePath3.c_str(), &imgWidth2, &imgHeight2, &nChannels2, 0);
-	if (data2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth2, imgHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
+
+	unsigned char* data_rgba2 = (unsigned char *)malloc(imgWidth2 * imgHeight2 * 4);
+	if (nullptr == data_rgba2) {
+		std::cout << "data_rgba malloc failed" << std::endl;
+		return -1;
+	}
+	for (int row = 0; row < imgHeight2; ++row) {
+		for (int col = 0; col < imgWidth2; ++col) {
+			int r = *(data2 + row * imgWidth2 * 3 + col * 3);
+			int g = *(data2 + row * imgWidth2 * 3 + col * 3 + 1);
+			int b = *(data2 + row * imgWidth2 * 3 + col * 3 + 2);
+			*(data_rgba2 + row * imgWidth2 * 4 + col * 4) = r;
+			*(data_rgba2 + row * imgWidth2 * 4 + col * 4 + 1) = g;
+			*(data_rgba2 + row * imgWidth2 * 4 + col * 4 + 2) = b;
+			float gray = r * 0.299f + g * 0.587f + b * 0.114f;
+			/*if (gray < 100) {
+				*(data_rgba2 + row * imgWidth2 * 4 + col * 4 + 3) = 0;
+			}
+			else {
+				*(data_rgba2 + row * imgWidth2 * 4 + col * 4 + 3) = 150;
+			}*/
+			*(data_rgba2 + row * imgWidth2 * 4 + col * 4 + 3) = 255;
+		}
+	}
+
+	if (data_rgba2) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth2, imgHeight2, 0, GL_RGBA, GL_UNSIGNED_BYTE, data_rgba2);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	else {
 		cout << "stbi_load image2 failed" << endl;
 		return -1;
 	}
+
 	stbi_image_free(data2);
+	free(data_rgba2);
+	data_rgba2 = nullptr;
 
 #ifdef USE_SHADER_HELPER
 	shaderHelper.use();
-	shaderHelper.setInt("texture2", 1);
-	//shaderHelper.setfloat("thresh", 0.5);
+	shaderHelper.setInt("texture1", 0);
 #endif
 
 	while (!glfwWindowShouldClose(window)) {
@@ -100,8 +179,8 @@ int main() {
 		// bind Texture
 		glBindTexture(GL_TEXTURE_2D, texture);
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
+		//glActiveTexture(GL_TEXTURE1);
+		//glBindTexture(GL_TEXTURE_2D, texture2);
 
 #ifdef USE_SHADER_HELPER
 		shaderHelper.use();
@@ -124,6 +203,10 @@ int main() {
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+		glBindTexture(GL_TEXTURE_2D, texture2);
+		glBindVertexArray(VAO_plane);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
 		glfwSwapBuffers(window);
@@ -133,6 +216,10 @@ int main() {
 	glDeleteBuffers(1, &VBO);
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &EBO);
+
+	glDeleteBuffers(1, &VBO_plane);
+	glDeleteVertexArrays(1, &VAO_plane);
+	glDeleteBuffers(1, &EBO_plane);
 
 	glfwTerminate();
 	return 0;
