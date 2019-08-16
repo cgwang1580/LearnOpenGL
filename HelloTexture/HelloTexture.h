@@ -21,31 +21,28 @@ enum MERR_CODE {
 	MERR_NO_MEMORY
 };
 
-const string imagePath = "..\\Resource\\HelloTexture\\test2.png";
+const string imagePath3 = "..\\Resource\\HelloTexture\\Face.jpg";
 const string imagePath2 = "..\\Resource\\HelloTexture\\awesomeface.png";
-const string imagePath3 = "..\\Resource\\HelloTexture\\test1.jpg";
+const string imagePath = "..\\Resource\\HelloTexture\\awesomeface.png";
 
 unsigned int texture;
 unsigned int texture2;
 unsigned int VAO;
 unsigned int VBO;
-unsigned int EBO;
 
-unsigned int VAO_plane, VBO_plane, EBO_plane;
+unsigned int VAO_plane, VBO_plane;
 
 float thresh = 0.5;
 
 float vertices[] = {
-	// vertex				color				texture
-	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-	 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
-};
+	// vertex			texture
+	0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+	0.0f, -0.5f,  0.0f,  0.0f,  1.0f,
+	1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
 
-unsigned int indecies[] = {
-	0, 1, 3,
-	1, 2, 3
+	0.0f,  0.5f,  0.0f,  0.0f,  0.0f,
+	1.0f, -0.5f,  0.0f,  1.0f,  1.0f,
+	1.0f,  0.5f,  0.0f,  1.0f,  0.0f
 };
 
 const string vertexShaderPath = "Shader/vertex.shader";
