@@ -30,4 +30,5 @@ public:
 	void setBool(const string &name, bool value) const;
 	void setInt(const string &name, int value) const;
 	void setfloat(const string &name, float value) const;
+	void setVec3f(const string &name, float value1, float value2, float value3) const;
 };
