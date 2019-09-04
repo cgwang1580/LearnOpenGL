@@ -109,5 +109,5 @@ void Shader_Helper::setVec3f(const string &name, float value1, float value2, flo
 
 void Shader_Helper::setMat4(const string &name, const glm::mat4 &mat) const
 {
-	glUniformMatrix4fv(glGetUniformLocation(progreamId, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(progreamId, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
 }

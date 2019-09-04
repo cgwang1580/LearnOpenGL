@@ -9,7 +9,7 @@ int main() {
 	}
 
 #ifdef USE_SHADER_HELPER
-	Shader_Helper lightShaderHelper(vertexShaderPath, fragmentShaderPath);
+	Shader_Helper objectShaderHelper(vertexShaderPath, fragmentShaderPath);
 	Shader_Helper lambShaderHelper(vertexLambShaderPath, fragmentLambShaderPath);
 #endif // USE_SHADER_HELPER
 
@@ -18,14 +18,15 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	glBindVertexArray(cubeVAO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof (float)));
 	glEnableVertexAttribArray(0);
 
 	// create for light vertex
 	glGenVertexArrays(1, &lambVAO);
 	glBindVertexArray(lambVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	glBindVertexArray(0);
 	
@@ -41,16 +42,17 @@ int main() {
 		glm::mat4 model = glm::mat4(1.0f);
 
 #ifdef USE_SHADER_HELPER
-		lightShaderHelper.use();
-		lightShaderHelper.setVec3f("objectColor", 1.0f, 0.5f, 0.31f);
-		lightShaderHelper.setVec3f("lightColor", 1.0f, 1.0f, 1.0f);
+		objectShaderHelper.use();
+		objectShaderHelper.setVec3f("objectColor", 1.0f, 0.5f, 0.31f);
+		objectShaderHelper.setVec3f("lightColor", 1.0f, 1.0f, 1.0f);
 
 		// set light, view/projection transfomations
-		lightShaderHelper.setMat4("projection", projection);
-		lightShaderHelper.setMat4("view", view);
+		objectShaderHelper.setMat4("projection", projection);
+		objectShaderHelper.setMat4("view", view);
 
+		model = glm::translate(model, objPos);
 		// world transformation
-		lightShaderHelper.setMat4("model", model);
+		objectShaderHelper.setMat4("model", model);
 #endif
 		glBindVertexArray(cubeVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
