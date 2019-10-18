@@ -153,10 +153,9 @@ int main() {
 			cout << "rotateAngle = " << rotateAngle << endl;
 			model = glm::rotate(model, rotateAngle, glm::vec3(0.0f, 1.0f, -0.0f));
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glDrawArrays(GL_LINE_STRIP, 0, 36);
 		}
 		glBindVertexArray(0);
-
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
