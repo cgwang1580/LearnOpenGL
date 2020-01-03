@@ -17,13 +17,22 @@ using namespace std;
 
 float vertices[]{
 	// 0, 1, 2, 3, 4, 5
-	 0.25, 0.25,  0,  1.0, 1.0, 0.0,
+	 0.25, 0.25,  0,  1.0, 1.0, 1.0,
 	 0,    0.125, 0,  1.0, 1.0, 1.0,
-	-0.25, 0.25,  0,  0.0, 1.0, 1.0,
+	-0.25, 0.25,  0,  1.0, 1.0, 1.0,
 	 0,    0,     0,  1.0, 1.0, 1.0,
-	-0.5, -0.25,  0,  1.0, 0.0, 1.0,
-	 0,   -0.125, 0,  0.0, 1.0, 1.0,
-	 0.5, -0.25,  0,  1.0, 1.0, 0.0
+	-0.5, -0.25,  0,  1.0, 1.0, 1.0,
+	 0,   -0.125, 0,  1.0, 1.0, 1.0,
+	 0.5, -0.25,  0,  1.0, 1.0, 1.0
+};
+
+float vertices_bg[]{
+	 0.5,  0.5, 0, 0.0, 0.0, 0.0,
+	-0.5,  0.5, 0, 0.0, 0.0, 0.0,
+	 0.5, -0.5, 0, 0.0, 0.0, 0.0,
+	 0.5, -0.5, 0, 0.0, 0.0, 0.0,
+	-0.5, -0.5, 0, 0.0, 0.0, 0.0,
+	-0.5,  0.5, 0, 0.0, 0.0, 0.0
 };
 
 unsigned int indecies[] = {
@@ -62,6 +71,20 @@ int main()
 	Shader_Helper shaderHelper(vertexShaderPath, fragmentShaderPath);
 #endif // USE_SHADER_HELPER
 
+	GLuint VAO_bg, VBO_bg;
+	glGenVertexArrays(1, &VAO_bg);
+	glBindVertexArray(VAO_bg);
+
+	glGenBuffers(1, &VBO_bg);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_bg);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_bg), vertices_bg, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof (float)));
+	glEnableVertexAttribArray(1);
+	glBindVertexArray(0);
+
+
 	GLuint VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -81,16 +104,23 @@ int main()
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
 
+	glEnable(GL_BLEND);
+
 	while (!glfwWindowShouldClose(window)) {
 		//processInput(window);
 
 		// render
 		// ------
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 		// draw our first triangle
 		shaderHelper.use();
+
+		glBindVertexArray(VAO_bg);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
 		glBindVertexArray(VAO); 
 		//glDrawArrays(GL_TRIANGLE_STRIP, 0, 7);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -102,6 +132,8 @@ int main()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+
+	glDisable(GL_BLEND);
 
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
