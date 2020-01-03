@@ -20,9 +20,6 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);*/
-
 	// set vertex attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -30,10 +27,6 @@ int main() {
 	// set color attribute
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
-
-	// set texture attribute
-	/*glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);*/
 
 	glBindVertexArray(0);  // Unbind VAO
 
@@ -71,8 +64,10 @@ int main() {
 
 		glm::mat4 model = glm::mat4(1.0);
 		//model = glm::translate(model, cubePositions[0]);
+	
 		cout << "rotateAngle = " << rotateAngle << endl;
-		model = glm::rotate(model, rotateAngle, glm::vec3(0.0f, 1.0f, -0.0f));
+		float rotateAngleRadius = rotateAngle / 180 * MY_PI;
+		model = glm::rotate(model, rotateAngleRadius, glm::vec3(0.0f, 1.0f, -0.0f));
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
 		glDrawArrays(GL_LINE_STRIP, 0, 6);
 
@@ -155,19 +150,6 @@ void processInput(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
-	/*if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		cameraPos += cameraSpeed * cameraFront;
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		cameraPos -= cameraSpeed * cameraFront;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}*/
-
 }
 
 void doMovement(){
@@ -177,12 +159,10 @@ void doMovement(){
 	if (keys[GLFW_KEY_DOWN])
 		cameraPos -= cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_RIGHT]) {
-		rotateAngle -= 0.05f;
-		//cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		rotateAngle -= 10.0f;
 	}
 	if (keys[GLFW_KEY_LEFT]) {
-		rotateAngle += 0.05f;
-		//cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+		rotateAngle += 10.0f;
 	}
 	for (int i = 0; i < 1024; ++i) {
 		keys[i] = false;

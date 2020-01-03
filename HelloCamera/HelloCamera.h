@@ -16,6 +16,7 @@ const unsigned int WIN_HEIGHT = 600;
 
 #define MY_MAX_PATH	256
 #define USE_SHADER_HELPER
+#define MY_PI	3.1415926
 
 enum MERR_CODE {
 	MOK = 0,
