@@ -15,24 +15,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HelloTexture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="HelloTexture.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CommonFiles\glad.c">
+    <ClCompile Include="DrawTrianglePitches.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\CommonFiles\Shader_Helper.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shader\fragment.shader" />
-    <None Include="Shader\vertex.shader" />
-    <None Include="Shader\vertexRight.shader" />
+    <ClCompile Include="..\CommonFiles\glad.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

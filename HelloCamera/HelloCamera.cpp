@@ -14,15 +14,11 @@ int main() {
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	//glGenBuffers(1, &EBO);
 
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_cube), vertices_cube, GL_STATIC_DRAW);
-
-	/*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indecies), indecies, GL_STATIC_DRAW);*/
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// set vertex attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
@@ -32,97 +28,21 @@ int main() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	// set texture attribute
-	/*glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);*/
-
 	glBindVertexArray(0);  // Unbind VAO
-
-						   // load image, create texture
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	// set texture proterty
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// read image
-	int imgWidth = 0;
-	int imgHeight = 0;
-	int nChannels = 0;
-	unsigned char* data = NULL;
-	stbi_set_flip_vertically_on_load(true);
-	data = stbi_load(imagePath.c_str(), &imgWidth, &imgHeight, &nChannels, 0);
-	if (data) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		cout << "stbi_load image failed" << endl;
-		return -1;
-	}
-	stbi_image_free(data);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
-
-									 // load texture2
-	glGenTextures(1, &texture2);
-	glBindTexture(GL_TEXTURE_2D, texture2);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	int imgWidth2 = 0;
-	int imgHeight2 = 0;
-	int nChannels2 = 0;
-	unsigned char* data2 = NULL;
-	stbi_set_flip_vertically_on_load(true);
-	data2 = stbi_load(imagePath3.c_str(), &imgWidth2, &imgHeight2, &nChannels2, 0);
-	if (data2) {
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth2, imgHeight2, 0, GL_RGB, GL_UNSIGNED_BYTE, data2);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
-		cout << "stbi_load image2 failed" << endl;
-		return -1;
-	}
-	stbi_image_free(data2);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glEnable(GL_DEPTH_TEST);
-
-	// get view port test
-	GLint dim[4];
-	glGetIntegerv(GL_VIEWPORT, dim);
-
-
-#ifdef USE_SHADER_HELPER
-	shaderHelper.use();
-	shaderHelper.setInt("texture1", 0);
-	shaderHelper.setInt("texture2", 1);
-#endif // USE_SHADER_HELPER
 
 	while (!glfwWindowShouldClose(window)) {
 		processInput(window);
 
-		currentTime = static_cast<GLfloat>(glfwGetTime());
-		takeTime = currentTime - lastTime;
-		//cameraSpeed = takeTime * 10000000000.0f * cameraSpeed;
-		//cout << "lastTime = " << lastTime << "  currentTime = " << currentTime << "  takeTime = " << takeTime << "  cameraSpeed = " << cameraSpeed << endl;
-
 		doMovement();
 
-		// active texture
-		glActiveTexture(GL_TEXTURE0);
-		// bind Texture
-		glBindTexture(GL_TEXTURE_2D, texture);
-
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, texture2);
+#ifdef USE_SHADER_HELPER
+		shaderHelper.use();
+#endif
 
 		// Create transformations
 		// make sure to initialize matrix to identity matrix first, important!!!
 		glm::mat4 transform = glm::mat4(1.0f);
-		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
+		//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.5f, 1.0f, 0.0f));
 
 		glm::mat4 view = glm::mat4(1.0f);
 		view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -142,19 +62,16 @@ int main() {
 
 		glBindVertexArray(VAO);
 
-		for (int i = 0; i < 10; ++i) {
-			glm::mat4 model = glm::mat4(1.0);
-			model = glm::translate(model, cubePositions[i]);
-			GLfloat angel = 20.0f * i;
-			if (i%4 == 0) {
-				angel = (GLfloat)glfwGetTime();
-			}
-			model = glm::rotate(model, angel, glm::vec3(1.0f, 0.3f, 0.5f));
-			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-		glBindVertexArray(0);
+		glm::mat4 model = glm::mat4(1.0);
+		//model = glm::translate(model, cubePositions[0]);
+	
+		cout << "rotateAngle = " << rotateAngle << endl;
+		float rotateAngleRadius = rotateAngle / 180 * MY_PI;
+		model = glm::rotate(model, rotateAngleRadius, glm::vec3(0.0f, 1.0f, -0.0f));
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
+		glDrawArrays(GL_LINE_STRIP, 0, 6);
 
+		glBindVertexArray(0);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -201,8 +118,8 @@ GLFWwindow* initGLFW() {
 	glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
 	cout << "GL_MAX_VERTEX_ATTRIBS " << nrAttributes << endl;
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	glfwSetCursorPosCallback(window, mouse_callback);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	//glfwSetCursorPosCallback(window, mouse_callback);
 
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -233,19 +150,6 @@ void processInput(GLFWwindow *window) {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		glfwSetWindowShouldClose(window, true);
 	}
-	/*if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		cameraPos += cameraSpeed * cameraFront;
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		cameraPos -= cameraSpeed * cameraFront;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	}*/
-
 }
 
 void doMovement(){
@@ -254,10 +158,12 @@ void doMovement(){
 		cameraPos += cameraSpeed * cameraFront;
 	if (keys[GLFW_KEY_DOWN])
 		cameraPos -= cameraSpeed * cameraFront;
-	if (keys[GLFW_KEY_RIGHT])
-		cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-	if (keys[GLFW_KEY_LEFT])
-		cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+	if (keys[GLFW_KEY_RIGHT]) {
+		rotateAngle -= 10.0f;
+	}
+	if (keys[GLFW_KEY_LEFT]) {
+		rotateAngle += 10.0f;
+	}
 	for (int i = 0; i < 1024; ++i) {
 		keys[i] = false;
 	}

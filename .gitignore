@@ -3,8 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# toy
-/Libs/include/toy_to_glm
+#my own files
+Libs/include/toy_to_glm
 
 # User-specific files
 *.rsuser

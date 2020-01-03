@@ -16,6 +16,7 @@ const unsigned int WIN_HEIGHT = 600;
 
 #define MY_MAX_PATH	256
 #define USE_SHADER_HELPER
+#define MY_PI	3.1415926
 
 enum MERR_CODE {
 	MOK = 0,
@@ -38,10 +39,12 @@ float thresh = 0.5;
 
 float vertices[] = {
 	// vertex				texture
-	 0.5f,   0.5f, 0.0f,   1.0f, 1.0f,
-	 0.5f,  -0.5f, 0.0f,   1.0f, 0.0f,
-	-0.5f,  -0.5f, 0.0f,   0.0f, 0.0f,
-	-0.5f,   0.5f, 0.0f,   0.0f, 1.0f
+	 -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	  0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	  0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	  0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	 -0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	 -0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
 };
 
 unsigned int indecies[] = {
@@ -50,7 +53,49 @@ unsigned int indecies[] = {
 };
 
 float vertices_cube[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f,
+	0.5f, -0.5f, -0.0f,  1.0f, 0.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	0.5f,  0.5f, -0.0f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.0f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.0f,  0.0f, 0.0f
+
+	/*-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 	0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
 	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
 	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
@@ -90,7 +135,7 @@ float vertices_cube[] = {
 	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
 	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f*/
 };
 
 glm::vec3 cubePositions[] = {
@@ -110,6 +155,8 @@ glm::vec3 cubePositions[] = {
 glm::vec3 cameraPos = glm::vec3(0.0, 0.0, 3.0);
 glm::vec3 cameraFront = glm::vec3(0.0, 0.0, -1.0);
 glm::vec3 cameraUp = glm::vec3(0.0, 1.0, 0.0);
+
+GLfloat rotateAngle = 0.0f;
 
 const string vertexShaderPath = "Shader/vertex.shader";
 const string fragmentShaderPath = "Shader/fragment.shader";

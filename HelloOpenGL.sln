@@ -15,11 +15,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloCoordiante", "HelloCoo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloCamera", "HelloCamera\HelloCamera.vcxproj", "{FE53BD01-10A3-4EC0-B7CA-C756B3E4A018}"
 EndProject
+<<<<<<< HEAD
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F02303EF-0626-4055-9968-5213E3F30AA0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenglBlend", "OpenglBlend\OpenglBlend.vcxproj", "{EDBF1C78-4F4F-455F-8E43-A392856A858A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HelloColor", "HelloColor\HelloColor.vcxproj", "{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}"
+=======
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenglBlend", "OpenglBlend\OpenglBlend.vcxproj", "{EDBF1C78-4F4F-455F-8E43-A392856A858A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawTrianglePitches", "DrawTrianglePitches\DrawTrianglePitches.vcxproj", "{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}"
+>>>>>>> dev_test
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +91,7 @@ Global
 		{EDBF1C78-4F4F-455F-8E43-A392856A858A}.Release|x64.Build.0 = Release|x64
 		{EDBF1C78-4F4F-455F-8E43-A392856A858A}.Release|x86.ActiveCfg = Release|Win32
 		{EDBF1C78-4F4F-455F-8E43-A392856A858A}.Release|x86.Build.0 = Release|Win32
+<<<<<<< HEAD
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Debug|x64.ActiveCfg = Debug|x64
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Debug|x64.Build.0 = Debug|x64
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Debug|x86.ActiveCfg = Debug|Win32
@@ -93,6 +100,16 @@ Global
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Release|x64.Build.0 = Release|x64
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Release|x86.ActiveCfg = Release|Win32
 		{B5EE07D5-0A9C-4829-BCD1-46CA22662AEA}.Release|x86.Build.0 = Release|Win32
+=======
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Debug|x64.ActiveCfg = Debug|x64
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Debug|x64.Build.0 = Debug|x64
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Debug|x86.ActiveCfg = Debug|Win32
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Debug|x86.Build.0 = Debug|Win32
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Release|x64.ActiveCfg = Release|x64
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Release|x64.Build.0 = Release|x64
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Release|x86.ActiveCfg = Release|Win32
+		{EF4AD889-C19F-4A98-99A2-62A87E92FFD0}.Release|x86.Build.0 = Release|Win32
+>>>>>>> dev_test
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
