@@ -10,10 +10,12 @@
 #include <glm\gtc\type_ptr.hpp>
 
 #define USE_SHADER_HELPER
-#define WIN_WINDTH 800
-#define WIN_HEIGHT 600
+#define WIN_WINDTH 1080
+#define WIN_HEIGHT 1920
 
 using namespace std;
+
+GLfloat pointRadius = 5.0f;
 
 float vertices[]{
 	// 0, 1, 2, 3, 4, 5, 6
@@ -44,8 +46,25 @@ float vertices_bg[]{
 
 unsigned int indecies[] = {
 	0, 1,
+	0, 2,
+	0, 3,
+	0, 4,
+	0, 5,
+	0, 6,
 	1, 2,
+	1, 3,
+	1, 4,
+	1, 5,
+	1, 6,
+	2, 3,
+	2, 4,
+	2, 5,
+	2, 6,
 	3, 4,
+	3, 5,
+	3, 6,
+	4, 5,
+	4, 6,
 	5, 6,
 };
 
@@ -123,14 +142,30 @@ int main()
 		// draw our first triangle
 		shaderHelper.use();
 
+		GLfloat lineWidth = 1.0f;
+		glLineWidth(lineWidth);
+		GLfloat pointRadius = 5.0f;
+		//glPointSize(pointRadius);
+		shaderHelper.setfloat("pointSize", pointRadius);
+
+		
+
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_LINES, 42, GL_UNSIGNED_INT, 0);
+
+		glDrawArrays(GL_POINTS, 0, 7);
 		glBindVertexArray(0);
 
 		glBindVertexArray(VAO_bg); 
 		glDrawArrays(GL_LINES, 0, 4);
+
+		glEnable(GL_PROGRAM_POINT_SIZE);
+
+		glDrawArrays(GL_POINTS, 0, 4);
 		glBindVertexArray(0);
+
+		glDisable(GL_PROGRAM_POINT_SIZE);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
