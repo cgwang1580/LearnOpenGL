@@ -131,6 +131,27 @@ int main()
 	glEnableVertexAttribArray(1);
 	glBindVertexArray(0);
 
+
+	// create texture
+	GLuint texture1;
+	glGenTextures(1, &texture1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* data = nullptr;
+	data = stbi_load("green.jpg", &width, &height, &nrChannels, 0);
+	if (nullptr != data) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	}
+	else {
+		cout << "stbi_load failed" << endl;
+	}
+	stbi_image_free(data);
+
 	while (!glfwWindowShouldClose(window)) {
 		//processInput(window);
 
@@ -144,10 +165,10 @@ int main()
 
 		GLfloat lineWidth = 1.0f;
 		glLineWidth(lineWidth);
-		GLfloat pointRadius = 5.0f;
+		GLfloat pointRadius = 50.0f;
 		//glPointSize(pointRadius);
 		shaderHelper.setfloat("pointSize", pointRadius);
-
+		shaderHelper.setBool("is_sprite", true);
 		
 
 		glBindVertexArray(VAO);
@@ -160,12 +181,14 @@ int main()
 		glBindVertexArray(VAO_bg); 
 		glDrawArrays(GL_LINES, 0, 4);
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_PROGRAM_POINT_SIZE);
-
+		glBindTexture(GL_TEXTURE_2D, texture1);
 		glDrawArrays(GL_POINTS, 0, 4);
 		glBindVertexArray(0);
-
 		glDisable(GL_PROGRAM_POINT_SIZE);
+		glDisable(GL_BLEND);
 		
 		glfwSwapBuffers(window);
 		glfwPollEvents();
