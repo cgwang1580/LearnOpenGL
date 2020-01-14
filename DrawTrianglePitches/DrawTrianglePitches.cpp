@@ -163,6 +163,7 @@ int main()
 		// draw our first triangle
 		shaderHelper.use();
 
+		shaderHelper.setInt("sprite_texture", 0);
 		GLfloat lineWidth = 1.0f;
 		glLineWidth(lineWidth);
 		GLfloat pointRadius = 50.0f;
@@ -184,8 +185,10 @@ int main()
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glEnable(GL_PROGRAM_POINT_SIZE);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture1);
 		glDrawArrays(GL_POINTS, 0, 4);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
 		glDisable(GL_PROGRAM_POINT_SIZE);
 		glDisable(GL_BLEND);

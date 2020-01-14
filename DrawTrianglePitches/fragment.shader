@@ -8,7 +8,7 @@ uniform sampler2D sprite_texture;
 void main()
 {
 	if (is_sprite) {
-		if (length(gl_PointCoord-vec2(0.5)) > 0.35){
+		if (length(gl_PointCoord-vec2(0.5)) > 0.5){
 			discard;
 		}
 	}
